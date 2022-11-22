@@ -5,7 +5,7 @@ import TodoList from '../TodoList/TodoList';
 import './TodoBlock.scss';
 
 function TodoBlock() {
-  const [todos, setTodos] = React.useState([]);
+  const [todos, setTodos] = React.useState('');
   const [selectTag, setSelectTag] = React.useState('');
   const [tags, setTags] = React.useState([]);
   const [filterTodos, setFilterTodos] = React.useState([]);
@@ -13,7 +13,7 @@ function TodoBlock() {
 
   const deleteTag = (item) => {
     const removeTag = tags.filter((tag) => tag !== item);
-    const corectTodos = todos.map((todo) => {
+    const corectTodos = JSON.parse(todos).map((todo) => {
       const text = todo.text.split(' ');
       const res = text.indexOf(item);
       if (res !== -1) {
@@ -27,7 +27,7 @@ function TodoBlock() {
       }
       return todo;
     });
-    setTodos(corectTodos);
+    setTodos(JSON.stringify(corectTodos));
     setTags(removeTag);
     setToggle(false);
   };
@@ -40,19 +40,28 @@ function TodoBlock() {
 
   const addTodo = (todo) => {
     const result = [...new Set([...tags, ...todo.tags])];
-    const newTodos = [todo, ...todos];
+    const data = todos.length !== 0 ? JSON.parse(todos) : [];
+    const newTodos = JSON.stringify([todo, ...data]);
     setTodos(newTodos);
     setTags(result);
   };
 
   const completeTodo = (id) => {
-    let updatedTodos = todos.map((item) => {
+    const updatedTodos = JSON.parse(todos).map((item) => {
       if (item.id === id) {
         item.isComplete = !item.isComplete;
       }
       return item;
     });
-    setTodos(updatedTodos);
+    const updFilterTodos = filterTodos.map((item) => {
+      if (item.id === id) {
+        item.isComplete = !item.isComplete;
+      }
+      return item;
+    });
+
+    setFilterTodos(updFilterTodos);
+    setTodos(JSON.stringify(updatedTodos));
   };
 
   const updateTodo = (todoId, newValue) => {
@@ -60,26 +69,26 @@ function TodoBlock() {
       .map((item) => (item.id === todoId ? newValue : item))
       .filter((item) => item.tags.length !== 0);
 
-    const updTodos = todos.map((item) => (item.id === todoId ? newValue : item));
+    const updTodos = JSON.parse(todos).map((item) => (item.id === todoId ? newValue : item));
     setToggle(false);
     setTags(removeDuplicate(updTodos));
-    setTodos(updTodos);
+    setTodos(JSON.stringify(updTodos));
     setFilterTodos(updFilterTodos);
   };
 
   const removeTodo = (id) => {
-    const removeArr = todos.filter((todo) => todo.id !== id);
+    const removeArr = JSON.parse(todos).filter((todo) => todo.id !== id);
     const removeFilterArr = filterTodos.filter((todo) => todo.id !== id);
 
     if (!removeFilterArr.length) setToggle(false);
 
     setFilterTodos(removeFilterArr);
     setTags(removeDuplicate(removeArr));
-    setTodos(removeArr);
+    setTodos(JSON.stringify(removeArr));
   };
 
   const filterTodo = (item) => {
-    const filterTodos = todos.filter((todo) => todo.tags.includes(item));
+    const filterTodos = JSON.parse(todos).filter((todo) => todo.tags.includes(item));
     setSelectTag(item);
     setFilterTodos(filterTodos);
     setToggle(true);
@@ -96,7 +105,7 @@ function TodoBlock() {
         deleteTag={deleteTag}
       />
       <TodoList
-        todos={toggleFilter ? filterTodos : todos}
+        todos={toggleFilter ? filterTodos : todos.length ? JSON.parse(todos) : []}
         completeTodo={completeTodo}
         removeTodo={removeTodo}
         updateTodo={updateTodo}
