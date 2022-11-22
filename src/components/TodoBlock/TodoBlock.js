@@ -6,6 +6,7 @@ import style from './TodoBlock.module.scss';
 
 function TodoBlock() {
   const [todos, setTodos] = React.useState([]);
+  const [selectTag, setSelectTag] = React.useState('');
   const [tags, setTags] = React.useState([]);
   const [filterTodos, setFilterTodos] = React.useState([]);
   const [toggleFilter, setToggle] = React.useState(false);
@@ -79,6 +80,7 @@ function TodoBlock() {
 
   const filterTodo = (item) => {
     const filterTodos = todos.filter((todo) => todo.tags.includes(item));
+    setSelectTag(item);
     setFilterTodos(filterTodos);
     setToggle(true);
   };
@@ -99,6 +101,7 @@ function TodoBlock() {
         removeTodo={removeTodo}
         updateTodo={updateTodo}
         toggleFilter={toggleFilter}
+        selectTag={selectTag}
       />
     </div>
   );

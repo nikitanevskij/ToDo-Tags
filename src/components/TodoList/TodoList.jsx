@@ -4,8 +4,9 @@ import { TiEdit } from 'react-icons/ti';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import TodoInput from '../TodoInput/TodoInput';
 import './TodoList.scss';
+import TextMark from './TextMark';
 
-function TodoList({ todos, completeTodo, removeTodo, updateTodo, toggleFilter }) {
+function TodoList({ todos, completeTodo, removeTodo, updateTodo, toggleFilter, selectTag }) {
   const [edit, setEdit] = React.useState({
     id: null,
     value: '',
@@ -24,7 +25,9 @@ function TodoList({ todos, completeTodo, removeTodo, updateTodo, toggleFilter })
   }
   return todos.map((todo, index) => (
     <div className={todo.isComplete ? 'todo-row complete' : 'todo-row'} key={index}>
-      <div key={todo.id}>{todo.text}</div>
+      <div key={todo.id}>
+        {toggleFilter ? <TextMark value={todo.text} selectTag={selectTag} /> : todo.text}
+      </div>
       <div className="icons">
         <AiOutlineCheckCircle onClick={() => completeTodo(todo.id)} />
         <RiCloseCircleLine onClick={() => removeTodo(todo.id)} />
