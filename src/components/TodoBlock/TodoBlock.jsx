@@ -2,7 +2,7 @@ import React from 'react';
 import TagsBlock from '../TagsBlock/TagsBlock';
 import TodoInput from '../TodoInput/TodoInput';
 import TodoList from '../TodoList/TodoList';
-import style from './TodoBlock.module.scss';
+import './TodoBlock.scss';
 
 function TodoBlock() {
   const [todos, setTodos] = React.useState([]);
@@ -87,7 +87,7 @@ function TodoBlock() {
 
   return (
     <div>
-      <h1 className={style.todoBlockTitle}>Добавьте новую задачу</h1>
+      <h1 className="todoBlockTitle">Добавьте новую задачу</h1>
       <TodoInput onSubmits={addTodo} />
       <TagsBlock
         tagsList={tags}

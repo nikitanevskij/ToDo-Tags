@@ -1,13 +1,11 @@
-import style from './TagsBlock.module.scss';
+import './TagsBlock.scss';
 import { RiCloseCircleLine } from 'react-icons/ri';
 
 const TagsBlock = ({ tagsList, setToggle, filterTodo, deleteTag }) => {
   return (
-    <div className={style.tagsBlock}>
+    <div className="tagsBlock">
       <ul>
-        <li onClick={() => setToggle(false)} className={style.active}>
-          Все задачи
-        </li>
+        <li onClick={() => setToggle(false)}>Все задачи</li>
         {tagsList.map((item, index) => (
           <div key={index}>
             <li onClick={() => filterTodo(item)}>{item}</li>
