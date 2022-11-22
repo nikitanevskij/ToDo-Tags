@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { Todo } from '../TodoBlock/TodoBlock';
 import './TodoInput.scss';
 
-function TodoInput({ onSubmits, edit }) {
+type TObjEdit = {
+  id: number | null;
+  value: string;
+};
+type TInputProps = {
+  onSubmits: (todo: Todo) => void;
+  edit?: TObjEdit;
+};
+
+const TodoInput: React.FC<TInputProps> = ({ onSubmits, edit }) => {
   const [input, setInput] = React.useState(edit ? edit.value : '');
 
-  const inputRef = React.useRef(null);
-
+  const inputRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current && inputRef.current.focus();
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
   const handleSubmit = () => {
-    const filterTag = input.split(' ').filter((item) => item[0] === '#');
+    const filterTag = input.split(' ').filter((item: string) => item[0] === '#');
     if (!input.length) return;
     onSubmits({
       id: Math.floor(Math.random() * 10000),
@@ -36,13 +45,8 @@ function TodoInput({ onSubmits, edit }) {
             onChange={handleChange}
             ref={inputRef}
             className="inputBlock__input inputBlock__input__edit"
-            // className="todo-input edit"
           />
-          <button
-            onClick={handleSubmit}
-            // className="todo-button edit"
-            className="inputBlock__button inputBlock__button__edit"
-          >
+          <button onClick={handleSubmit} className="inputBlock__button inputBlock__button__edit">
             Изменить
           </button>
         </>
@@ -62,6 +66,6 @@ function TodoInput({ onSubmits, edit }) {
       )}
     </div>
   );
-}
+};
 
 export default TodoInput;

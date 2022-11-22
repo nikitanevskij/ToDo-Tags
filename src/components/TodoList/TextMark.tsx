@@ -1,5 +1,10 @@
-const TextMark = ({ value, selectTag }) => {
-  const markFunc = (str) => {
+type TMarkProps = {
+  value: string;
+  selectTag: string;
+};
+
+const TextMark: React.FC<TMarkProps> = ({ value, selectTag }) => {
+  const markFunc = (str: string) => {
     const tagMark = str.replaceAll(selectTag, `<mark>${selectTag}</mark>`);
     return { __html: tagMark };
   };

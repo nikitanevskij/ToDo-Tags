@@ -4,16 +4,23 @@ import TodoInput from '../TodoInput/TodoInput';
 import TodoList from '../TodoList/TodoList';
 import './TodoBlock.scss';
 
-function TodoBlock() {
+export type Todo = {
+  id: number;
+  text: string;
+  tags: string[];
+  isComplete?: boolean;
+};
+
+const TodoBlock: React.FC = () => {
   const [todos, setTodos] = React.useState('');
   const [selectTag, setSelectTag] = React.useState('');
-  const [tags, setTags] = React.useState([]);
-  const [filterTodos, setFilterTodos] = React.useState([]);
+  const [tags, setTags] = React.useState(['']);
+  const [filterTodos, setFilterTodos] = React.useState<Todo[]>([]);
   const [toggleFilter, setToggle] = React.useState(false);
 
-  const deleteTag = (item) => {
+  const deleteTag = (item: string) => {
     const removeTag = tags.filter((tag) => tag !== item);
-    const corectTodos = JSON.parse(todos).map((todo) => {
+    const corectTodos = JSON.parse(todos).map((todo: Todo) => {
       const text = todo.text.split(' ');
       const res = text.indexOf(item);
       if (res !== -1) {
@@ -32,13 +39,13 @@ function TodoBlock() {
     setToggle(false);
   };
 
-  const removeDuplicate = (arr) => {
+  const removeDuplicate = (arr: Todo[]) => {
     const arrTags = arr.map((item) => item.tags).flat();
     const arrTagsSet = [...new Set(arrTags)];
     return arrTagsSet;
   };
 
-  const addTodo = (todo) => {
+  const addTodo = (todo: Todo) => {
     const result = [...new Set([...tags, ...todo.tags])];
     const data = todos.length !== 0 ? JSON.parse(todos) : [];
     const newTodos = JSON.stringify([todo, ...data]);
@@ -46,8 +53,8 @@ function TodoBlock() {
     setTags(result);
   };
 
-  const completeTodo = (id) => {
-    const updatedTodos = JSON.parse(todos).map((item) => {
+  const completeTodo = (id: number) => {
+    const updatedTodos = JSON.parse(todos).map((item: Todo) => {
       if (item.id === id) {
         item.isComplete = !item.isComplete;
       }
@@ -64,21 +71,21 @@ function TodoBlock() {
     setTodos(JSON.stringify(updatedTodos));
   };
 
-  const updateTodo = (todoId, newValue) => {
+  const updateTodo = (todoId: number | null, newValue: Todo) => {
     const updFilterTodos = filterTodos
       .map((item) => (item.id === todoId ? newValue : item))
       .filter((item) => item.tags.length !== 0);
 
-    const updTodos = JSON.parse(todos).map((item) => (item.id === todoId ? newValue : item));
+    const updTodos = JSON.parse(todos).map((item: Todo) => (item.id === todoId ? newValue : item));
     setToggle(false);
     setTags(removeDuplicate(updTodos));
     setTodos(JSON.stringify(updTodos));
     setFilterTodos(updFilterTodos);
   };
 
-  const removeTodo = (id) => {
-    const removeArr = JSON.parse(todos).filter((todo) => todo.id !== id);
-    const removeFilterArr = filterTodos.filter((todo) => todo.id !== id);
+  const removeTodo = (id: number) => {
+    const removeArr = JSON.parse(todos).filter((todo: Todo) => todo.id !== id);
+    const removeFilterArr = filterTodos.filter((todo: Todo) => todo.id !== id);
 
     if (!removeFilterArr.length) setToggle(false);
 
@@ -87,8 +94,8 @@ function TodoBlock() {
     setTodos(JSON.stringify(removeArr));
   };
 
-  const filterTodo = (item) => {
-    const filterTodos = JSON.parse(todos).filter((todo) => todo.tags.includes(item));
+  const filterTodo = (item: string) => {
+    const filterTodos = JSON.parse(todos).filter((todo: Todo) => todo.tags.includes(item));
     setSelectTag(item);
     setFilterTodos(filterTodos);
     setToggle(true);
@@ -97,6 +104,7 @@ function TodoBlock() {
   return (
     <div>
       <h1 className="todoBlockTitle">Добавьте новую задачу</h1>
+
       <TodoInput onSubmits={addTodo} />
       <TagsBlock
         tagsList={tags}
@@ -114,6 +122,6 @@ function TodoBlock() {
       />
     </div>
   );
-}
+};
 
 export default TodoBlock;
