@@ -14,7 +14,7 @@ export type Todo = {
 const TodoBlock: React.FC = () => {
   const [todos, setTodos] = React.useState('');
   const [selectTag, setSelectTag] = React.useState('');
-  const [tags, setTags] = React.useState(['']);
+  const [tags, setTags] = React.useState<string[]>([]);
   const [filterTodos, setFilterTodos] = React.useState<Todo[]>([]);
   const [toggleFilter, setToggle] = React.useState(false);
 
