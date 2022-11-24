@@ -42,11 +42,11 @@ export const todosSlice = createSlice({
     },
     updateTodoAction: (state, action) => {
       state.filtredTodosList = state.filtredTodosList
-        .map((item) => (item.id === action.payload.todoId ? action.payload.newValue : item))
+        .map((item) => (item.id === action.payload.todoId ? action.payload.value : item))
         .filter((item) => item.tags.length !== 0);
 
       const updTodosList = JSON.parse(state.todosList).map((item: Todo) =>
-        item.id === action.payload.todoId ? action.payload.newValue : item,
+        item.id === action.payload.todoId ? action.payload.value : item,
       );
 
       state.togleState = false;

@@ -26,6 +26,7 @@ const TodoInput: React.FC<TInputProps> = ({ onSubmits, edit }) => {
   const handleSubmit = () => {
     const filterTag = input.split(' ').filter((item: string) => item[0] === '#');
     if (!input.length) return;
+
     onSubmits({
       id: Math.floor(Math.random() * 10000),
       text: input,
